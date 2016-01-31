@@ -1,2 +1,6 @@
+# Gradle
+build/
+.gradle/
+
 # OSX
 .DS_Store
