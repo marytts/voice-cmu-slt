@@ -1,0 +1,47 @@
+apply plugin: 'de.dfki.mary.voicebuilding-festvox'
+apply plugin: 'de.dfki.mary.voicebuilding-legacy'
+
+group 'de.dfki.mary'
+version '5.2-SNAPSHOT'
+
+voice {
+    name = 'cmu-slt'
+    gender = 'female'
+    license {
+        name = 'Arctic License'
+        shortName = 'Arctic'
+        url = 'http://festvox.org/cmu_arctic/cmu_arctic/cmu_us_slt_arctic/COPYING'
+    }
+}
+
+repositories {
+    ivy {
+        url 'http://festvox.org/cmu_arctic/cmu_arctic/packed/'
+        layout 'pattern', {
+            artifact '[module]-[revision]-[classifier].[ext]'
+        }
+    }
+}
+
+dependencies {
+    data group: 'org.festvox', name: 'cmu_us_slt_arctic', version: '0.95', classifier: 'release', ext: 'tar.bz2'
+}
+
+task generateBasenamesList {
+    def destFile = file("$buildDir/basenames.lst")
+    outputs.files destFile
+    dependsOn wav
+    doLast {
+        destFile.text = fileTree("$buildDir/wav").include('*.wav').collect {
+            it.name - '.wav'
+        }.minus([
+                'arctic_a0438',
+                'arctic_a0439',
+                'arctic_b0391'
+        ]).join('\n')
+    }
+}
+
+legacyInit.dependsOn wav, lab, text, generateBasenamesList
+
+assemble.dependsOn legacyDescriptor
