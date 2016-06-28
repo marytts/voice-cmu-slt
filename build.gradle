@@ -16,6 +16,10 @@ voice {
 
 repositories {
     ivy {
+        url 'http://mary.dfki.de/repo'
+        layout 'maven'
+    }
+    ivy {
         url 'http://festvox.org/cmu_arctic/cmu_arctic/packed/'
         layout 'pattern', {
             artifact '[module]-[revision]-[classifier].[ext]'
