@@ -1,5 +1,7 @@
-apply plugin: 'de.dfki.mary.voicebuilding-festvox'
-apply plugin: 'de.dfki.mary.voicebuilding-legacy'
+plugins {
+    id 'de.dfki.mary.voicebuilding-festvox' version '5.2.0'
+    id 'de.dfki.mary.voicebuilding-legacy' version '5.2.0'
+}
 
 group 'de.dfki.mary'
 version '5.2-SNAPSHOT'
