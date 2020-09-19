@@ -1,0 +1,11 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+    }
+    plugins {
+        id 'com.github.kt3k.coveralls' version '2.10.1'
+        id 'com.gradle.plugin-publish' version '0.11.0'
+    }
+}
+include 'gradle-marytts-component-plugin'
+include 'gradle-marytts-voicebuilding-plugin'

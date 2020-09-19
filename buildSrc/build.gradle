@@ -1,0 +1,8 @@
+repositories {
+    jcenter()
+}
+
+dependencies {
+    runtimeOnly project('gradle-marytts-component-plugin')
+    runtimeOnly project('gradle-marytts-voicebuilding-plugin')
+}
