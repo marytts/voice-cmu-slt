@@ -1,30 +1,30 @@
 plugins {
-    id 'de.dfki.mary.voicebuilding-festvox' version '5.3.2'
-    id 'de.dfki.mary.voicebuilding-legacy' version '5.3.2'
+    id 'de.dfki.mary.voicebuilding-festvox'
+    id 'de.dfki.mary.voicebuilding-legacy'
 }
 
 group 'de.dfki.mary'
 version '5.3-SNAPSHOT'
 
-voice {
-    name = 'cmu-slt'
-    gender = 'female'
-    license {
-        name = 'Arctic License'
-        shortName = 'Arctic'
-        url = 'http://festvox.org/cmu_arctic/cmu_arctic/cmu_us_slt_arctic/COPYING'
+marytts {
+    voice {
+        name = 'cmu-slt'
+        gender = 'female'
+        license {
+            name = 'Arctic License'
+            shortName = 'Arctic'
+            url = 'http://festvox.org/cmu_arctic/cmu_arctic/cmu_us_slt_arctic/COPYING'
+        }
     }
 }
 
 repositories {
     ivy {
         url 'http://mary.dfki.de/repo'
+        allowInsecureProtocol = true
         layout 'maven'
-    }
-    ivy {
-        url 'http://festvox.org/cmu_arctic/cmu_arctic/packed/'
-        layout 'pattern', {
-            artifact '[module]-[revision]-[classifier].[ext]'
+        metadataSources {
+            artifact()
         }
     }
 }
@@ -33,30 +33,18 @@ dependencies {
     data group: 'org.festvox', name: 'cmu_us_slt_arctic', version: '0.95', classifier: 'release', ext: 'tar.bz2'
 }
 
-task generateBasenamesList {
-    def destFile = file("$buildDir/basenames.lst")
-    outputs.files destFile
-    dependsOn wav
-    doLast {
-        destFile.text = fileTree("$buildDir/wav").include('*.wav').collect {
-            it.name - '.wav'
-        }.minus([
-                'arctic_a0438',
-                'arctic_a0439',
-                'arctic_b0391'
-        ]).join('\n')
-    }
+basenames {
+    textDir = text.destDir
+    labDir = lab.destDir
+    // TODO: For debugging, use only 100 utterances
+    include 'arctic_a01*'
 }
-
-legacyInit.dependsOn wav, lab, text, generateBasenamesList
 
 generateVoiceConfig {
     afterEvaluate {
-        config << [
-                targetCostWeights: "jar:/marytts/voice/$voice.nameCamelCase/customTargetCostWeights.txt",
-                joinCostWeights  : "jar:/marytts/voice/$voice.nameCamelCase/customJoinCostWeights.txt",
-        ]
+        config.putAll([
+                targetCostWeights: "jar:/marytts/voice/$marytts.voice.nameCamelCase/customTargetCostWeights.txt",
+                joinCostWeights  : "jar:/marytts/voice/$marytts.voice.nameCamelCase/customJoinCostWeights.txt",
+        ])
     }
 }
-
-assemble.dependsOn legacyDescriptor

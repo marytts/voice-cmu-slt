@@ -1,0 +1,6 @@
+[submodule "gradle-marytts-voicebuilding-plugin"]
+	path = buildSrc/gradle-marytts-voicebuilding-plugin
+	url = https://github.com/marytts/gradle-marytts-voicebuilding-plugin.git
+[submodule "gradle-marytts-component-plugin"]
+	path = buildSrc/gradle-marytts-component-plugin
+	url = https://github.com/marytts/gradle-marytts-component-plugin.git
