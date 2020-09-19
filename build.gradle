@@ -36,6 +36,8 @@ dependencies {
 basenames {
     textDir = text.destDir
     labDir = lab.destDir
+    // TODO: For debugging, use only 100 utterances
+    include 'arctic_a01*'
 }
 
 generateVoiceConfig {
